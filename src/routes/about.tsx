@@ -5,6 +5,7 @@ export default function About() {
     <main>
       <Title>About</Title>
       <h1>About</h1>
+      <img src="/gopher.svg" alt="kserverui logo" />
     </main>
   );
 }
