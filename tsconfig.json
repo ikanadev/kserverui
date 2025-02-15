@@ -13,7 +13,9 @@
     "types": ["vinxi/types/client", "bun-types"],
     "isolatedModules": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "@app/*": ["./src/*"],
+      "@routes/*": ["./src/routesData/*"],
+      "@panda/*": ["./styled-system/*"]
     }
   }
 }
