@@ -2,6 +2,7 @@ export type BatteryStatus = "Charging" | "Discharging" | "Full" | "Not charging"
 
 export type ServerStatus = {
 	battery: {
+    hasBattery: boolean;
 		percentage: number | null;
 		status: BatteryStatus | null;
 	};

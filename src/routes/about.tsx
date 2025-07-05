@@ -1,10 +1,10 @@
-import { Title } from "@solidjs/meta";
+import { A } from "@solidjs/router";
 
 export default function About() {
   return (
     <main>
-      <Title>About</Title>
       <h1>About</h1>
+      <A href="/">Home</A>
       <img src="/gopher.svg" alt="kserverui logo" />
     </main>
   );

@@ -1,10 +1,31 @@
-// import { css } from "../../styled-system/css";
 import { css } from "@panda/css";
-import { token } from "@panda/tokens";
 
 export const container = css({
-  maxW: "1280px",
-  m: "0 auto",
-  p: "1rem",
-  bg: "#efefef",
+  maxW: "3xl",
+  mx: "auto",
+  p: "3",
+});
+
+export const grid = css({
+  display: "grid",
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  gap: "4",
+  py: "4",
+});
+
+export const item = css({
+  display: "flex",
+  alignItems: "center",
+  gap: "4",
+});
+export const itemIcon = css({
+  fill: "gray.200",
+});
+export const itemData = css({
+  fontSize: "3xl",
+  color: "primary",
+  fontWeight: "bold",
+});
+export const itemLabel = css({
+  fontSize: "xs",
 });

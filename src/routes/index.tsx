@@ -1,72 +1,78 @@
-import { Show, Suspense } from "solid-js";
-import { Title } from "@solidjs/meta";
-import {
-  createAsync,
-  query,
-  action,
-  type RouteDefinition,
-} from "@solidjs/router";
+import { createEffect, createResource, Show, Suspense } from "solid-js";
 
-import type { ServerStatus } from "@app/utils/types";
 import * as classes from "@routes/index/styles";
-import { N } from "@routes/index/constants";
-
-const sendMessage = action(async (msg: string) => {
-  "use server";
-  console.log("Sending message:", msg);
-});
-
-const serverStatus = query(async () => {
-  "use server";
-  // const resp = await Bun.fetch('http://host.docker.internal:8000');
-  const resp = await Bun.fetch("http://localhost:8000");
-  const data = (await resp.json()) as ServerStatus;
-  return data;
-}, "serverStatus");
-
-export const route = {
-  preload: () => serverStatus(),
-} satisfies RouteDefinition;
+import { fetchServerStatus } from "@app/routesData/index/utils.server";
+import CpuIcon from "@app/assets/svg/cpu.svg?solid";
+import MemoryIcon from "@app/assets/svg/memory.svg?solid";
+import StorageIcon from "@app/assets/svg/storage.svg?solid";
+import BatteryIcon from "@app/assets/svg/battery.svg?solid";
+import { formatUsage } from "@app/routesData/index/utils";
 
 export default function Home() {
-  const status = createAsync(() => serverStatus());
+  const [serverStatus, { refetch }] = createResource(fetchServerStatus);
+
+  const refetchInterval = setInterval(() => {
+    refetch();
+  }, 5000);
+
+  createEffect(() => {
+    return () => {
+      clearInterval(refetchInterval);
+    };
+  });
+
   return (
     <main class={classes.container}>
-      <Title>Server Status</Title>
-      <h1>Server Status {N}</h1>
+      <h1>My home server :)</h1>
       <p>
-        In short, Svelte is a way of writing user interface components — like a
-        navigation bar, comment section, or contact form — that users see and
-        interact with in their browsers. The Svelte compiler converts your
-        components to JavaScript that can be run to render the HTML for the page
-        and to CSS that styles the page. You don’t need to know Svelte to
-        understand the rest of this guide, but it will help. If you’d like to
-        learn more, check out the Svelte tutorial.
+        Welcome to my home server, you can't do many things here unless you're me :)
       </p>
-      <div>
-        <button
-          type="button"
-          onClick={() => {
-            sendMessage("test");
-          }}
-        >
-          Send Message
-        </button>
-      </div>
-      <Suspense fallback={<p>Loading...</p>}>
-        <Show when={status?.()}>
+      <Suspense>
+        <Show when={serverStatus?.latest}>
           {(data) => (
-            <div>
-              <pre>{JSON.stringify(data(), null, 2)}</pre>
-              {/*
-					<p>Battery: {data().battery}%</p>
-					<p>RAM: {Math.round(data().ram.used / data().ram.total * 100)}%  -  {(data().ram.used/1024).toFixed(2)}/{(data().ram.total/1024).toFixed(2)}MB</p>
-					<p>CPU: {data().cpu.toFixed(2)}%</p>
-					*/}
-            </div>
+            <>
+              <div class={classes.grid}>
+                <div class={classes.item}>
+                  <CpuIcon class={classes.itemIcon} />
+                  <div>
+                    <p class={classes.itemData}>{data().cpu.usage}%</p>
+                    <p class={classes.itemLabel}>{data().cpu.name}</p>
+                  </div>
+                </div>
+
+                <div class={classes.item}>
+                  <MemoryIcon class={classes.itemIcon} />
+                  <div>
+                    <p class={classes.itemData}>{formatUsage(data().ram.used)}</p>
+                    <p class={classes.itemLabel}>of {formatUsage(data().ram.total)}</p>
+                  </div>
+                </div>
+
+                <div class={classes.item}>
+                  <StorageIcon class={classes.itemIcon} />
+                  <div>
+                    <p class={classes.itemData}>{formatUsage(data().storage.used)}</p>
+                    <p class={classes.itemLabel}>of {formatUsage(data().storage.total)}</p>
+                  </div>
+                </div>
+
+                <Show when={data().battery.hasBattery}>
+                  <div class={classes.item}>
+                    <BatteryIcon class={classes.itemIcon} />
+                    <div>
+                      <p class={classes.itemData}>{data().battery.percentage}%</p>
+                      <p class={classes.itemLabel}>{data().battery.status}</p>
+                    </div>
+                  </div>
+                </Show>
+              </div>
+            </>
           )}
         </Show>
       </Suspense>
+      <br />
+      <br />
+      <h1>My apps</h1>
     </main>
   );
 }
