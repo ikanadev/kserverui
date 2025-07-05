@@ -3,16 +3,21 @@ import { defineConfig, defineGlobalStyles } from "@pandacss/dev";
 const globalCss = defineGlobalStyles({
   'html, body': {
     lineHeight: '1.65',
-    '--global-font-body': 'system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol", sans-serif',
-    '--global-font-mono': 'SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace',
+    background: 'gray.900',
+    color: 'gray.200',
+  },
+  'h1, h2, h3, h4, h5, h6': {
+    fontWeight: '600',
+    fontSize: 'medium',
+    color: 'gray.100',
   },
 });
 
 export default defineConfig({
-  // Whether to use css reset
+  // Whether to use CSS reset
   preflight: true,
 
-  // Where to look for your css declarations
+  // Where to look for your CSS declarations
   include: ["./src/**/*.{js,jsx,ts,tsx}", "./pages/**/*.{js,jsx,ts,tsx}"],
 
   // Files to exclude
@@ -20,10 +25,18 @@ export default defineConfig({
 
   // Useful for theme customization
   theme: {
-    extend: {},
+    extend: {
+      semanticTokens: {
+        colors: {
+          primary: {
+            value: { base: "{colors.emerald.500}", _dark: "{colors.emerald.400}" },
+          },
+        },
+      },
+    },
   },
 
-  // The output directory for your css system
+  // The output directory for your CSS system
   outdir: "styled-system",
   strictTokens: true,
   strictPropertyValues: true,

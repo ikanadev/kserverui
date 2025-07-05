@@ -1,5 +1,7 @@
 import path from "path";
 import { defineConfig } from "@solidjs/start/config";
+import solidSVG from "vite-solid-svg";
+import oxlintPlugin from "vite-plugin-oxlint";
 
 export default defineConfig({
 	server: {
@@ -13,5 +15,6 @@ export default defineConfig({
         "@panda": path.resolve(__dirname, "./styled-system"),
       },
     },
+    plugins: [solidSVG(), oxlintPlugin()],
   },
 });
