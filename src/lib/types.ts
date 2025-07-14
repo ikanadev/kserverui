@@ -1,10 +1,8 @@
-export type BatteryStatus = "Charging" | "Discharging" | "Full" | "Not charging" | "Unknown";
-
 export type ServerStatus = {
 	battery: {
-    hasBattery: boolean;
+		hasBattery: boolean;
 		percentage: number | null;
-		status: BatteryStatus | null;
+		status: string | null;
 	};
 	ram: {
 		total: number | null;
@@ -18,4 +16,4 @@ export type ServerStatus = {
 		total: number | null;
 		used: number | null;
 	};
-}
+};
