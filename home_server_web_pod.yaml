@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: home_server_web
+  labels:
+    app: home_server_web
+spec:
+  containers:
+  - name: home_server_web_container
+    image: home_server_web:latest
+    ports:
+    - containerPort: 3000
+      protocol: TCP
+    env:
+    - name: HOME_PATH
+      value: "http://host.containers.internal:8000"
+    - name: PORT
+      value: "3000"

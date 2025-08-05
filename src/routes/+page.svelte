@@ -33,20 +33,23 @@
 
 	<br />
 	<br />
-	<p>
-		Server data: {#if isUpdating}(updating...){/if}
-	</p>
+	<div class={styles.heading}>
+		<p>Server data:</p>
+		<p class={styles.loadingText}>
+			{#if isUpdating}...updating...{/if}
+		</p>
+	</div>
 	<pre>
     CPU: {data.cpu.name}
     Usage: {data.cpu.usage}%
 
     RAM: {formatUsage(data.ram.used)}
-    Total: {formatUsage(data.ram.total)}
+    Total: {formatUsage(data.ram.total)} ({(((data.ram.used ?? 0) * 100) / (data.ram.total ?? 1)).toFixed(2)}%)
 
     Storage: {formatUsage(data.storage.used)}
     Total: {formatUsage(data.storage.total)}
-    {#if data.battery.hasBattery}
-			Battery: {data.battery.percentage}%
+
+    {#if data.battery.hasBattery}Battery: {data.battery.percentage}%
     Status: {data.battery.status}
 		{/if}
   </pre>

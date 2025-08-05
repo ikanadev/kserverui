@@ -1,0 +1,23 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-5.5.2
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2025-07-19T04:29:54Z"
+  labels:
+    app: giftedlederberg-pod
+  name: giftedlederberg-pod
+spec:
+  containers:
+  - env:
+    - name: HOME_PATH
+      value: http://host.containers.internal:8000
+    image: localhost/my-home:latest
+    name: giftedlederberg
+    ports:
+    - containerPort: 3000
+      hostPort: 3000
+    securityContext: {}
+

@@ -11,4 +11,13 @@ export const vars = createThemeContract({
 			dimmed: '',
 		},
 	},
+  size: {
+    text: {
+      xs: '',
+      sm: '',
+      base: '',
+      lg: '',
+      xl: '',
+    },
+  },
 });
